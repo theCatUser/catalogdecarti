@@ -1,23 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from "react";
+import BookForm from "./components/BookForm";
+import BookList from "./components/BookList";
+import BookDetails from "./components/BookDetails";
 
 function App() {
+  const [books, setBooks] = useState([]);
+  const [selectedBook, setSelectedBook] = useState(null);
+
+  const addBook = (book) => {
+    setBooks([...books, book]);
+  };
+
+  const deleteBook = (index) => {
+    setBooks(books.filter((_, i) => i !== index));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Catalog de Cărți</h1>
+      <BookForm addBook={addBook} />
+      <BookList books={books} onSelectBook={setSelectedBook} deleteBook={deleteBook} />
+      {selectedBook && <BookDetails book={selectedBook} />}
     </div>
   );
 }
